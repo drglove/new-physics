@@ -1,0 +1,4 @@
+generate_events
+set nevents 100000
+set lpp1 0
+set lpp2 0

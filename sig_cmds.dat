@@ -1,0 +1,3 @@
+import model muon-scalar_UFO
+generate mu+ > phi e+ ve vm~ / z h , phi > e+ e-
+output muon-decay-newphysics

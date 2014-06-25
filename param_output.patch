@@ -1,0 +1,15 @@
+--- MG5_aMC_v2_1_1/madgraph/interface/madevent_interface.py	2014-04-01 00:44:13.000000000 -0700
++++ Dropbox/School/muonic-hydrogen/MG5_aMC_v2_1_1/madgraph/interface/madevent_interface.py	2014-06-11 17:34:05.000000000 -0700
+@@ -2128,6 +2128,12 @@
+             # pythia launches pgs/delphes if needed
+             self.store_result()
+             
++            # nlange 06-11-2014: Output param_card if a decay
++            if self.ninitial == 1:
++                self.collect_decay_widths()
++                self.update_status('generate_events done', level='parton',
++                                    makehtml=False)
++            
+     
+     def do_launch(self, line, *args, **opt):
+         """Main Commands: exec generate_events for 2>N and calculate_width for 1>N"""

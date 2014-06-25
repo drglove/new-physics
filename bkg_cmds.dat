@@ -1,0 +1,3 @@
+import model muon-scalar_UFO
+generate mu+ > e+ e+ e- ve vm~ / z h phi
+output muon-decay-background

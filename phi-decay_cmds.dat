@@ -1,0 +1,8 @@
+import model muon-scalar_UFO
+generate phi > e+ e-
+output phi-decay
+launch -i
+generate_events
+set nevents 10000
+set lpp1 0
+set lpp2 0

@@ -8,18 +8,14 @@
 #       Maybe we will simply change this to say "Auto" and then trust the width calculated
 #       by MadGraph, as long as we tune the accuracy
 
-SCRIPT_DIR="$(dirname "$0")"
-
-WORK_DIR=~/Dropbox/School/muonic-hydrogen
-MG5_DIR=$WORK_DIR/MG5_aMC_v2_1_2_beta
-FR_DIR=$WORK_DIR/muon-scalar-feynmanrules
-MA5_DIR=$MG5_DIR/madanalysis5
-BKG_DIR=$WORK_DIR/muon-decay-background
-SIG_DIR=$WORK_DIR/muon-decay-newphysics
+source variables.sh
 
 MG5=$MG5_DIR/bin/mg5_aMC
+MODEL_DIR=$WORK_DIR/muon-scalar-feynmanrules
 
-FR_SCRIPT=$WORK_DIR/muon-scalar-feynmanrules/muon-scalar-feynmanrules.m
+SCRIPT_DIR="$(dirname "$0")"
+
+MODEL_SCRIPT=$MODEL_DIR/muon-scalar-feynmanrules.m
 MA5_SCRIPT=$SCRIPT_DIR/ma5_cmds.dat
 ME5_SCRIPT=$SCRIPT_DIR/me5_cmds.dat
 PHIWIDTH_SCRIPT=$SCRIPT_DIR/phi-decay_cmds.dat
@@ -27,11 +23,11 @@ BKGGENERATE_SCRIPT=$SCRIPT_DIR/bkg_cmds.dat
 SIGGENERATE_SCRIPT=$SCRIPT_DIR/sig_cmds.dat
 
 # Generate the Feynman rules from the model
-MathKernel -script $FR_SCRIPT
+MathKernel -script $MODEL_SCRIPT
 
 # Update model in case it has changed
 rm -rf $MG5_DIR/models/muon-scalar_UFO
-mv $FR_DIR/muon-scalar_UFO $MG5_DIR/models
+mv $SCRIPT_DIR/muon-scalar_UFO $MG5_DIR/models
 
 # Generate our cards if they don't exist
 if [ ! -d "$BKG_DIR" ]; then
@@ -42,11 +38,12 @@ if [ ! -d "$SIG_DIR" ]; then
     $MG5 -f $SIGGENERATE_SCRIPT
 fi
 
-# TODO: Can we just do this in FeynRules?
 # Update the width of the scalar
-$MG5_DIR/bin/mg5_aMC -f $PHIWIDTH_SCRIPT
-cp $WORK_DIR/phi-decay/Events/run_01/param_card.dat $BKG_DIR/Cards
-cp $WORK_DIR/phi-decay/Events/run_01/param_card.dat $SIG_DIR/Cards
+# FeynRules does this now, since there is just one 1->2 decay
+# Below is how we used to do this, by generating decay events for the phi
+#$MG5_DIR/bin/mg5_aMC -f $PHIWIDTH_SCRIPT
+#cp $WORK_DIR/phi-decay/Events/run_01/param_card.dat $BKG_DIR/Cards
+#cp $WORK_DIR/phi-decay/Events/run_01/param_card.dat $SIG_DIR/Cards
 
 # See https://answers.launchpad.net/mg5amcnlo/+question/229140 for more details on running a script in madevent
 

@@ -1,15 +1,13 @@
 (* ::Package:: *)
 
-Directory[]
-
 
 $FeynRulesPath = SetDirectory[
     "~/Library/Mathematica/Applications/feynrules-2.1"]; 
 << "FeynRules`"
 
 
-SetDirectory[NotebookDirectory[]];
-LoadModel["SM.fr", "muon-scalar.fr"]; 
+ResetDirectory[]
+LoadModel["muon-scalar-feynmanrules/SM.fr", "muon-scalar-feynmanrules/muon-scalar.fr"]; 
 
 
 \[ScriptCapitalL]new = (1/2)*del[phi, \[Mu]]*del[phi, \[Mu]] - (Mphi^2/2)*phi^2 + 
@@ -19,15 +17,10 @@ LoadModel["SM.fr", "muon-scalar.fr"];
 vertices = FeynmanRules[\[ScriptCapitalL]new]
 
 
-decays=ComputeWidths[vertices]
+decays = ComputeWidths[vertices]
 
 
-(* ::Output:: *)
-(*(gse^2 (-2 Me+Mphi) (2 Me+Mphi) Sqrt[Mphi^2 (-4 Me^2+Mphi^2)])/(8 \[Pi] Abs[Mphi]^3)*)
-
-
-(* ::Input:: *)
-(*UpdateWidths[decays]*)
+UpdateWidths[decays]
 
 
 CheckHermiticity[LSM + \[ScriptCapitalL]new]

@@ -7,6 +7,7 @@ Nick Lange
 1.a Extract a copy of MadGraph5_aMC@NLO (version 2.1.1 or later)
 1.b Patch MG5 to output the param_card.dat when running generate_events by running `patch -p1 < param_output.patch`
 2. Extract a copy of FeynRules (version 2.1)
-3. Update the paths in the variables contained in auto_mg5/generate_events.sh
+3. Extract a copy of MadAnalysis 5
+3. Update the paths in the variables contained in variables.sh
 4. Update mass parameter in muon-scalar-feynmanrules/muon-scalar.fr
-5. Run auto_mg5/generate_events.sh
+5. Run generate_events.sh

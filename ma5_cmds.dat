@@ -4,6 +4,6 @@ import ${SIG_DIR}/Events/${SIG_RUN}/unweighted_events.lhe.gz as np
 set sm.type = background
 set np.type = signal
 
-plot M(e+ e-) 1000 0 0.1 [logY]
+plot M(e+ e-) 100 0 0.1 [logY]
 
 submit newphysics-analysis

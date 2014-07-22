@@ -6,4 +6,8 @@ set np.type = signal
 
 plot M(e+ e-) 100 0 0.1 [logY]
 
+set main.lumi = 2.101E32
+set main.SBratio = "S/sqrt(B)"
+select MET >= 0
+
 submit newphysics-analysis

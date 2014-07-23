@@ -10,18 +10,6 @@
 
 source variables.sh
 
-MG5=$MG5_DIR/bin/mg5_aMC
-MODEL_DIR=$WORK_DIR/muon-scalar-feynmanrules
-
-SCRIPT_DIR="$(dirname "$0")"
-
-MODEL_SCRIPT=$MODEL_DIR/muon-scalar-feynmanrules.m
-MA5_SCRIPT=$SCRIPT_DIR/ma5_cmds.dat
-ME5_SCRIPT=$SCRIPT_DIR/me5_cmds.dat
-PHIWIDTH_SCRIPT=$SCRIPT_DIR/phi-decay_cmds.dat
-BKGGENERATE_SCRIPT=$SCRIPT_DIR/bkg_cmds.dat
-SIGGENERATE_SCRIPT=$SCRIPT_DIR/sig_cmds.dat
-
 # Generate the Feynman rules from the model
 MathKernel -script $MODEL_SCRIPT
 
@@ -37,6 +25,14 @@ fi
 if [ ! -d "$SIG_DIR" ]; then
     $MG5 -f $SIGGENERATE_SCRIPT
 fi
+
+# Update our param_card.dat from the model
+# Note: param_card_default.dat does not change and the param_card.dat used in each run
+#       is output alongside the events with the parameters used from our patch
+python $UPDATE_PARAM_CARD
+cp ./param_card.dat $BKG_DIR/Cards
+cp ./param_card.dat $SIG_DIR/Cards
+rm param_card.dat
 
 # Update the width of the scalar
 # FeynRules does this now, since there is just one 1->2 decay

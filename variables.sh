@@ -24,3 +24,4 @@ PHIWIDTH_SCRIPT=$SCRIPT_DIR/phi-decay_cmds.dat
 BKGGENERATE_SCRIPT=$SCRIPT_DIR/bkg_cmds.dat
 SIGGENERATE_SCRIPT=$SCRIPT_DIR/sig_cmds.dat
 UPDATE_PARAM_CARD=$MG5_DIR/update_param_card.py
+PARSE_HTML=$SCRIPT_DIR/output_results.py

@@ -23,12 +23,12 @@ M$ClassesDescription = {
 
 M$Parameters = {
     gsm == { ParameterType    -> External,
-             Value            -> 0.01,
+             Value            -> 2.0*^-03,
              InteractionOrder -> { NP, 1 }
     },
 
     gse == { ParameterType    -> External,
-             Value            -> 0.01,
+             Value            -> 1.0*^-06,
              InteractionOrder -> { NP, 1 }
     }
 };

@@ -53,6 +53,10 @@ $SIG_DIR/bin/madevent $ME5_SCRIPT
 BKG_RUN=`ls -dt $BKG_DIR/Events/* | grep run | head -1 | awk -F/ '{print $(NF)}'`
 SIG_RUN=`ls -dt $SIG_DIR/Events/* | grep run | head -1 | awk -F/ '{print $(NF)}'`
 
+# Latest directory (export so these can be seen in Python below)
+export BKG_RUN_DIR=$BKG_DIR/Events/$BKG_RUN
+export SIG_RUN_DIR=$SIG_DIR/Events/$SIG_RUN
+
 # Copy the template script and insert our variables
 # Use sed to replace the variables
 sed -e "s;\${BKG_DIR};`echo ${BKG_DIR}`;" -e "s;\${SIG_DIR};`echo ${SIG_DIR}`;" -e "s;\${BKG_RUN};`echo ${BKG_RUN}`;" -e "s;\${SIG_RUN};`echo ${SIG_RUN}`;" $MA5_SCRIPT > $MA5_SCRIPT.tmp
@@ -61,3 +65,10 @@ sed -e "s;\${BKG_DIR};`echo ${BKG_DIR}`;" -e "s;\${SIG_DIR};`echo ${SIG_DIR}`;" 
 $MA5_DIR/bin/ma5 --script $MA5_SCRIPT.tmp
 
 rm $MA5_SCRIPT.tmp
+
+# Keep the report with the signal events
+cp newphysics-analysis/PDF/main.pdf $SIG_RUN_DIR/report.pdf
+cp newphysics-analysis/HTML/index.html $SIG_RUN_DIR/report.html
+
+# Extract the signal vs. background from report.html
+python $PARSE_HTML

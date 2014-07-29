@@ -23,7 +23,8 @@ decays = ComputeWidths[vertices]
 UpdateWidths[decays]
 
 
-CheckHermiticity[LSM + \[ScriptCapitalL]new]
+(* Skip checking the Hermiticity since it is slow; this should be re-enabled when the model changes *)
+(* CheckHermiticity[LSM + \[ScriptCapitalL]new] *)
 
 
 WriteUFO[LSM + \[ScriptCapitalL]new]

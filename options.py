@@ -38,7 +38,3 @@ me5_script = join(work_dir, 'me5_cmds.dat')
 bkg_generate_script = join(work_dir, 'bkg_cmds.dat')
 sig_generate_script = join(work_dir, 'sig_cmds.dat')
 
-update_param_card = join(mg5_dir, 'update_param_card.py')
-update_model_params = join(work_dir, 'update_model_params.py')
-parse_html = join(work_dir, 'output_results.py')
-

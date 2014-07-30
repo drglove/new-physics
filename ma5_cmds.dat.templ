@@ -1,0 +1,13 @@
+import BKG_RUN_DIR_REPLACE/unweighted_events.lhe.gz as bkg
+import SIG_RUN_DIR_REPLACE/unweighted_events.lhe.gz as sig
+
+set bkg.type = background
+set sig.type = signal
+
+plot M(e+ e-) 100 0 0.1 [logY]
+
+set main.lumi = 2.101E32
+set main.SBratio = "S/sqrt(B)"
+select MET >= 0
+
+submit OUTPUT_DIR_REPLACE

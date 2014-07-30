@@ -16,8 +16,9 @@ work_dir = os.path.dirname(os.path.realpath(__file__))
 
 bkg_dir = join(work_dir, 'muon-decay-background')
 sig_dir = join(work_dir, 'muon-decay-newphysics')
+analysis_dir = join(work_dir, 'newphysics-analysis')
 
-mg5_dir = join(work_dir, 'MG5_aMC_v2_1_2_beta')
+mg5_dir = join(work_dir, 'madgraph5')
 ma5_dir = join(work_dir, 'madanalysis5')
 
 mg5 = join(mg5_dir, 'bin', 'mg5_aMC')
@@ -31,6 +32,7 @@ model_src = join(work_dir, os.path.basename(model).replace('.fr', '_UFO'))
 model_dest = join(mg5_dir, 'models', os.path.basename(model).replace('.fr', '_UFO'))
 model_script = join(model_dir, 'muon-scalar-feynmanrules.m')
 ma5_script = join(work_dir, 'ma5_cmds.dat')
+ma5_templ = join(work_dir, 'ma5_cmds.dat.templ')
 me5_script = join(work_dir, 'me5_cmds.dat')
 
 bkg_generate_script = join(work_dir, 'bkg_cmds.dat')

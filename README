@@ -10,12 +10,10 @@ Prerequisites:
     BeautifulSoup4
 
 0. Checkout this repository
-1.a Extract a copy of MadGraph5_aMC@NLO (version 2.1.1 or later)
-1.b Patch MG5 to output the param_card.dat when running generate_events by running `patch -p0 < param_output.patch`
-1.c Copy update_param_card.py to the MG5 directory
+1.a Extract a copy of MadGraph5_aMC@NLO (version 2.1.1 or later) to 'madgraph5'
+1.b Patch MG5 to output the param_card.dat and suppress HTML pages opening when running generate_events by running `patch -p0 < param_output.patch`
 2. Extract a copy of FeynRules (version 2.1)
 3. Extract a copy of MadAnalysis 5
 4. Install BeautifulSoup4 (pip install beautifulsoup4)
-5. Update the paths in the variables contained in variables.sh
-6. Update mass parameter in muon-scalar-feynmanrules/muon-scalar.fr
-7. Run generate_events.sh
+5. Update the paths in the variables contained in options.sh
+6. Run python generate_events.py

@@ -1,5 +1,5 @@
---- MG5_aMC_v2_1_2_beta/madgraph/interface/madevent_interface.py	2014-04-01 00:44:13.000000000 -0700
-+++ MG5_aMC_v2_1_2_beta/madgraph/interface/madevent_interface.py	2014-06-11 17:34:05.000000000 -0700
+--- madgraph5/madgraph/interface/madevent_interface.py	2014-04-01 00:44:13.000000000 -0700
++++ madgraph5/madgraph/interface/madevent_interface.py	2014-06-11 17:34:05.000000000 -0700
 @@ -2128,6 +2128,12 @@
              # pythia launches pgs/delphes if needed
              self.store_result()
@@ -13,3 +13,16 @@
      
      def do_launch(self, line, *args, **opt):
          """Main Commands: exec generate_events for 2>N and calculate_width for 1>N"""
+
+--- madgraph5/input/mg5_configuration.txt	2014-05-16 05:28:17.000000000 -0700
++++ madgraph5/input/mg5_configuration.txt	2014-07-30 16:26:37.000000000 -0700
+@@ -78,7 +78,7 @@
+
+ #! Allow/Forbid the automatic opening of the web browser  (on the status page)
+ #!  when launching MadEvent [True/False]
+-# automatic_html_opening = True
++automatic_html_opening = False
+
+ #! Default Running mode
+ #!  0: single machine/ 1: cluster / 2: multicore
+

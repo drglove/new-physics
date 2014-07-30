@@ -1,0 +1,35 @@
+M$ModelName = "muon-scalar";
+
+M$Information = { Authors      -> { "N. Lange" },
+                  Version      -> "1.2",
+                  Date         -> "June 10, 2014",
+                  Institutions -> { "University of Victoria" },
+                  Emails       -> { "nlange@uvic.ca" }
+                };
+
+M$ClassesDescription = {
+    S[100] == {
+        ClassName        -> phi,
+        SelfConjugate    -> True,
+        Mass             -> { Mphi, MPHI_REPLACE },
+        Width            -> { Wphi, 1 },
+        PropagatorLabel  -> "phi",
+        PropagatorType   -> D,
+        PropagatorArrow  -> None,
+        ParticleName     -> "phi",
+        ParticleFullName -> "phi"
+    }
+};
+
+M$Parameters = {
+    gsm == { ParameterType    -> External,
+             Value            -> GSM_REPLACE,
+             InteractionOrder -> { NP, 1 }
+    },
+
+    gse == { ParameterType    -> External,
+             Value            -> GSE_REPLACE,
+             InteractionOrder -> { NP, 1 }
+    }
+};
+

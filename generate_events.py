@@ -326,8 +326,8 @@ def main():
     sig = True
     
     # Our ranges for our parameters
-    mphi = np.linspace(1.5e-3, 100e-3, num=20)
-    gsm = np.logspace(-6, -3, num=20)
+    mphis = np.linspace(1.5e-3, 100e-3, num=20)
+    gsms = np.logspace(-6, -3, num=20)
     gse = 1.00e-06
 
     logger = logging.getLogger(__name__)
@@ -339,8 +339,8 @@ def main():
     # Purge our directories
     #clean()
 
-    for mphi in mphi:
-        for gsm in gsm:
+    for mphi in mphis:
+        for gsm in gsms:
             # Generate the model with given parameters
             generate_model( mphi=mphi, gsm=gsm, gse=gse )
 

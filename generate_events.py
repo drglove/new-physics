@@ -19,6 +19,9 @@ import numpy as np
 
 import logging
 
+# Set logging options
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+
 # Generate the Feynman rules from the model
 def generate_model(**kwargs):
     """Generate the UFO model for a given set of parameters"""
@@ -95,6 +98,7 @@ def move_UFO():
         shutil.rmtree(options.model_dest, ignore_errors=True)
 
     # Move the new model in place
+    logger.info('Updating model directory: %s' % options.model_dest)
     shutil.move(options.model_src, options.model_dest)
 
 def generate_cards(bkg=True, sig=True):
@@ -116,6 +120,23 @@ def generate_param_card(modelname, output):
     """Generate param_card.dat for our model which we may need
     if the model is updated and we haven't recreated our event directories"""
 
+    logger = logging.getLogger(__name__)
+    logger.debug('Writing out updated param_card to %s' % output)
+
+    # We call a new Python interpreter because the imports required will break
+    # if used repeatedly within the same session when the model is being
+    # regenerated over and over again
+    from multiprocessing import Process
+    p = Process(target=do_generate_param_card, args=(modelname, output, ))
+    p.start()
+    p.join()
+
+def do_generate_param_card(modelname, output):
+    """Do the work for generating param_card.dat to <output> given
+    the model name. We put this in a separate function so it can be called
+    in a different process, because the imports below are sensitive to the
+    model changing, so we need a new Python interpreter for each call"""
+
     # Modify sys.path so we can import the below objects
     # See: http://stackoverflow.com/questions/279237/import-a-module-from-a-relative-path/6098238#6098238
     cmd_folder = os.path.realpath(os.path.abspath(options.mg5_dir))
@@ -124,12 +145,10 @@ def generate_param_card(modelname, output):
 
     import madgraph.core.base_objects as base_objects
     import models.import_ufo as import_ufo
-    import models.write_param_card as writer
+    import models.write_param_card as write_param_card
 
-    logger = logging.getLogger(__name__)
-    logger.debug('Writing out updated param_card to %s' % output)
     model = import_ufo.import_model(modelname)
-    writer = writer.ParamCardWriter(model)
+    writer = write_param_card.ParamCardWriter(model)
     writer.define_output_file(output)
     writer.write_card()
 
@@ -311,8 +330,6 @@ def main():
     gsm = np.logspace(-6, -3, num=20)
     gse = 1.00e-06
 
-    # Set logging options
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
     logger = logging.getLogger(__name__)
 
     if not bkg and not sig:

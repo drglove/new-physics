@@ -47,7 +47,7 @@ def generate_model(**kwargs):
 
     # Call FeynRules to create UFO model
     # NOTE: MathKernel calls fail when redirecting stdout
-    subprocess.call(['MathKernel', '-script', options.model_script])
+    subprocess.call(['MathKernel', '-noprompt', '-script', options.model_script])
 
     # Remove the model file and just leave the template
     os.remove(os.path.abspath(options.model))
@@ -253,7 +253,8 @@ def generate_report(bkg=True, sig=True):
     write_lines(options.ma5_script, mascript)
 
     # Call MadAnalysis5
-    subprocess.call([options.ma5, '--script', options.ma5_script], stdout=open(os.devnull, 'w'))
+    # NOTE: MadAnalysis5 requires we redirect stdout and stderr
+    subprocess.call([options.ma5, '--script', options.ma5_script], stdout=open(os.devnull, 'w'), stderr=open(os.devnull, 'w'))
 
     # Remove our script
     logger.debug('Removing MadAnalysis script: %s' % options.ma5_script)

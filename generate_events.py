@@ -22,7 +22,6 @@ import logging
 # Set logging options
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
 
-# Generate the Feynman rules from the model
 def generate_model(**kwargs):
     """Generate the UFO model for a given set of parameters"""
 
@@ -30,7 +29,8 @@ def generate_model(**kwargs):
     logger.info('Begin generation of UFO model')
 
     # Get the lines from the model template
-    templ_lines = read_template(options.model_templ)
+    logger.debug('Opening template file: %s' % options.model_templ)
+    templ_lines = read_lines(options.model_templ)
 
     # Replace each instance of the parameter name with it's value
     if kwargs is not None:
@@ -46,6 +46,7 @@ def generate_model(**kwargs):
     write_lines(options.model, templ_lines)
 
     # Call FeynRules to create UFO model
+    # NOTE: MathKernel calls fail when redirecting stdout
     subprocess.call(['MathKernel', '-script', options.model_script])
 
     # Remove the model file and just leave the template
@@ -54,13 +55,28 @@ def generate_model(**kwargs):
     # Move the resulting UFO model file to MadGraph5
     move_UFO()
 
-def read_template(template):
-    """Read in the lines from the template file"""
+def update_model(**kwargs):
+    """Update the UFO model with a given set of parameters"""
 
     logger = logging.getLogger(__name__)
-    logger.debug('Opening template file: %s' % template)
+    logger.info('Updating model parameters in UFO model')
 
-    with open(template, 'r') as f:
+    model_params = os.path.join(options.model_dest, 'parameters.py')
+    param_lines = read_lines(model_params)
+
+    if kwargs is not None:
+        logger.info('Model paramters: %s' % kwargs)
+        for param_name, param_value in kwargs.iteritems():
+            regex = re.compile('(Parameter\(name\s+=\s+\'' + param_name + '\',[^\)]*value\s+=\s+)([^,]*)(,[^\)]*\))')
+            param_lines = regex.sub(r'\g<1>%e\g<3>' % param_value, param_lines)
+
+    logger.debug('Writing updated model to %s' % model_params)
+    write_lines(model_params, param_lines)
+
+def read_lines(filename):
+    """Read in lines from a file"""
+
+    with open(filename, 'r') as f:
         lines = f.read()
         return lines
 
@@ -158,7 +174,7 @@ def generate_bkg_cards():
     logger = logging.getLogger(__name__)
     logger.info('Generating new MadGraph5 skeleton for background')
 
-    subprocess.call([options.mg5, '-f', options.bkg_generate_script])
+    subprocess.call([options.mg5, '-f', options.bkg_generate_script], stdout=open(os.devnull, 'w'))
 
 def generate_sig_cards():
     """Generate MadGraph5 cards for signal events"""
@@ -166,7 +182,7 @@ def generate_sig_cards():
     logger = logging.getLogger(__name__)
     logger.info('Generating new MadGraph5 skeleton for signal')
 
-    subprocess.call([options.mg5, '-f', options.sig_generate_script])
+    subprocess.call([options.mg5, '-f', options.sig_generate_script], stdout=open(os.devnull, 'w'))
 
 def generate_events(bkg=True, sig=True):
     """Generate Monte-Carlo events for given background and signal processes"""
@@ -185,7 +201,7 @@ def generate_bkg_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.bkg_dir, 'bin', 'madevent')
-    subprocess.call([madevent, options.me5_script])
+    subprocess.call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
     
 def generate_sig_events():
     """Generate Monte-Carlo events for a given signal process"""
@@ -195,7 +211,7 @@ def generate_sig_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.sig_dir, 'bin', 'madevent')
-    subprocess.call([madevent, options.me5_script])
+    subprocess.call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
 
 def generate_report(bkg=True, sig=True):
     """Use MadAnalysis5 to generate a report with a histogram of events
@@ -206,7 +222,8 @@ def generate_report(bkg=True, sig=True):
     logger.info('Building MadAnalysis5 report')
 
     # Read in the MadAnalysis5 commands
-    mascript = read_template(options.ma5_templ)
+    logger.debug('Opening template file: %s' % options.ma5_templ)
+    mascript = read_lines(options.ma5_templ)
 
     if bkg:
         # Replace each instance of the parameter name with it's value
@@ -236,7 +253,7 @@ def generate_report(bkg=True, sig=True):
     write_lines(options.ma5_script, mascript)
 
     # Call MadAnalysis5
-    subprocess.call([options.ma5, '--script', options.ma5_script])
+    subprocess.call([options.ma5, '--script', options.ma5_script], stdout=open(os.devnull, 'w'))
 
     # Remove our script
     logger.debug('Removing MadAnalysis script: %s' % options.ma5_script)
@@ -320,14 +337,35 @@ def clean():
     if os.path.isdir(options.analysis_dir):
         shutil.rmtree(options.analysis_dir)
 
+def resume():
+    """Return the array containing parameters we've seen already"""
+    
+    import cPickle as pickle
+    if os.path.isfile(options.pkl_file):
+        return pickle.load(open(options.pkl_file, 'rb'))
+    else:
+        return []
+
+def save(array):
+    """Save out the currently seen parameters"""
+
+    import cPickle as pickle
+    pickle.dump(array, open(options.pkl_file, 'wb'))
+
 def main():
     # Generate both signal and background
     bkg = True
     sig = True
     
+    # Initial and final values of our parameters
+    first_mphi = 1.5e-03
+    last_mphi = 100e-03
+    first_gsm = 1.0e-06
+    last_gsm = 1.0e-03
+
     # Our ranges for our parameters
-    mphis = np.linspace(1.5e-3, 100e-3, num=20)
-    gsms = np.logspace(-6, -3, num=20)
+    mphis = np.linspace(first_mphi, last_mphi, num=20)
+    gsms = np.logspace(np.log10(first_gsm), np.log10(last_gsm), num=20)
     gse = 1.00e-06
 
     logger = logging.getLogger(__name__)
@@ -339,10 +377,20 @@ def main():
     # Purge our directories
     #clean()
 
+    # Generate the model with given initials parameters
+    generate_model( mphi=first_mphi, gsm=first_gsm, gse=gse )
+
+    # Grab the parameters we've seen
+    seen_params = resume()
+
     for mphi in mphis:
         for gsm in gsms:
-            # Generate the model with given parameters
-            generate_model( mphi=mphi, gsm=gsm, gse=gse )
+            if (mphi, gsm) in seen_params:
+                # Skip pairs of parameters we've seen
+                continue
+
+            # Update our model with new parameters
+            update_model( mphi=mphi, gsm=gsm, gse=gse )
 
             # Generate cards for MadGraph5
             generate_cards(bkg, sig) 
@@ -356,6 +404,10 @@ def main():
             # Extract useful variables from report and param_card
             output = os.path.join(os.path.dirname(options.param_card), 'report.dat')
             write_results(output, bkg, sig)
+
+            # Update our parameters we've seen
+            seen_params.append((mphi, gsm))
+            save(seen_params)
 
 if __name__ == "__main__":
     main()

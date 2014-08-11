@@ -38,3 +38,5 @@ me5_script = join(work_dir, 'me5_cmds.dat')
 bkg_generate_script = join(work_dir, 'bkg_cmds.dat')
 sig_generate_script = join(work_dir, 'sig_cmds.dat')
 
+pkl_file = join(work_dir, 'seen_params.pkl')
+

@@ -20,7 +20,7 @@ import numpy as np
 import logging
 
 # Set logging options
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s;%(levelname)s: %(message)s', datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
 
 def generate_model(**kwargs):
     """Generate the UFO model for a given set of parameters"""
@@ -329,7 +329,7 @@ def clean():
     """Clean the output directories"""
 
     logger = logging.getLogger(__name__)
-    logger.info('Cleaning output directories')
+    logger.info('Cleaning output directories and state of simulation')
 
     if os.path.isdir(options.bkg_dir):
         shutil.rmtree(options.bkg_dir)
@@ -337,6 +337,8 @@ def clean():
         shutil.rmtree(options.sig_dir)
     if os.path.isdir(options.analysis_dir):
         shutil.rmtree(options.analysis_dir)
+    if os.path.isfile(options.pkl_file):
+        os.remove(options.pkl_file)
 
 def resume():
     """Return the array containing parameters we've seen already"""

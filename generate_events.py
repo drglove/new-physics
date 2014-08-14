@@ -67,11 +67,19 @@ def update_model(**kwargs):
     if kwargs is not None:
         logger.info('Model paramters: %s' % kwargs)
         for param_name, param_value in kwargs.iteritems():
-            regex = re.compile('(Parameter\(name\s+=\s+\'' + param_name + '\',[^\)]*value\s+=\s+)([^,]*)(,[^\)]*\))')
+            regex = re.compile('(Parameter\(name\s+=\s+\'' + param_name + '\',[^\)]*value\s+=\s+)([^,]*)(,[^\)]*\))', re.IGNORECASE)
             param_lines = regex.sub(r'\g<1>%e\g<3>' % param_value, param_lines)
 
     logger.debug('Writing updated model to %s' % model_params)
     write_lines(model_params, param_lines)
+
+def calculate_1to2_width(mphi, gsm, gse):
+    """Take the model parameters and calculate the width
+    of the new partcle in GeV"""
+
+    # We have phi > e+ e- as the only allowed decay
+    me = 0.000511 # Electron mass in GeV
+    return gse**2 / (8 * np.pi) * np.sqrt(mphi**2 - 4*me**2) * (1 - 4*(me/mphi)**2)
 
 def read_lines(filename):
     """Read in lines from a file"""
@@ -312,13 +320,13 @@ def write_results(outfile, bkg=True, sig=True):
     param_card = open(options.param_card, 'r').read()
 
     # TODO: Make this general so it's not stuck with our model
-    regex = re.compile('1\s+(.*)\s+\#\s+gsm')
+    regex = re.compile('1\s+(.*)\s+\#\s+gsm', re.IGNORECASE)
     outs['gsm'] = regex.search(param_card).group(1)
-    regex = re.compile('2\s+(.*)\s+\#\s+gse')
+    regex = re.compile('2\s+(.*)\s+\#\s+gse', re.IGNORECASE)
     outs['gse'] = regex.search(param_card).group(1)
-    regex = re.compile('9000005\s+(.*)\s+\#\s+Mphi')
+    regex = re.compile('9000005\s+(.*)\s+\#\s+Mphi', re.IGNORECASE)
     outs['Mphi'] = regex.search(param_card).group(1)
-    regex = re.compile('DECAY\s+9000005\s+(.*)')
+    regex = re.compile('DECAY\s+9000005\s+(.*)', re.IGNORECASE)
     outs['Wphi'] = regex.search(param_card).group(1)
 
     with open(outfile, 'w') as file:
@@ -392,8 +400,12 @@ def main():
                 # Skip pairs of parameters we've seen
                 continue
 
+            # FeynRules calculated our width for us, but we need to do this
+            # here manually to avoid calling FeynRules again
+            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gse )
+
             # Update our model with new parameters
-            update_model( mphi=mphi, gsm=gsm, gse=gse )
+            update_model( mphi=mphi, gsm=gsm, gse=gse, wphi=wphi )
 
             # Generate cards for MadGraph5
             generate_cards(bkg, sig) 

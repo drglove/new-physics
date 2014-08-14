@@ -1,1 +1,7 @@
 .DS_Store
+*.pyc
+*\~
+madgraph5
+py.py
+seen_params.pkl
+madanalysis5

@@ -47,7 +47,7 @@ def generate_model(**kwargs):
 
     # Call FeynRules to create UFO model
     # NOTE: MathKernel calls fail when redirecting stdout
-    subprocess.call(['MathKernel', '-noprompt', '-script', options.model_script])
+    subprocess.check_call(['MathKernel', '-noprompt', '-script', options.model_script])
 
     # Remove the model file and just leave the template
     os.remove(os.path.abspath(options.model))
@@ -182,7 +182,7 @@ def generate_bkg_cards():
     logger = logging.getLogger(__name__)
     logger.info('Generating new MadGraph5 skeleton for background')
 
-    subprocess.call([options.mg5, '-f', options.bkg_generate_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([options.mg5, '-f', options.bkg_generate_script], stdout=open(os.devnull, 'w'))
 
 def generate_sig_cards():
     """Generate MadGraph5 cards for signal events"""
@@ -190,7 +190,7 @@ def generate_sig_cards():
     logger = logging.getLogger(__name__)
     logger.info('Generating new MadGraph5 skeleton for signal')
 
-    subprocess.call([options.mg5, '-f', options.sig_generate_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([options.mg5, '-f', options.sig_generate_script], stdout=open(os.devnull, 'w'))
 
 def generate_events(bkg=True, sig=True):
     """Generate Monte-Carlo events for given background and signal processes"""
@@ -209,7 +209,21 @@ def generate_bkg_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.bkg_dir, 'bin', 'madevent')
-    subprocess.call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+
+    wait_counter = 0
+    time_out = False
+    while not time_out and os.path.isfile(os.path.join(options.bkg_dir, 'RunWeb')):
+        logger.debug('Waiting for RunWeb to be destroyed in %s' % options.bkg_dir)
+        import time
+        time.sleep(1)
+        wait_counter = wait_counter + 1
+        if wait_counter >= 10:
+            time_out = True
+
+    if time_out:
+        logger.error('RunWeb should be deleted by now from %s' % options.bkg_dir)
+        raise Exception('RunWeb should be deleted from %s' % options.bkg_dir)
     
 def generate_sig_events():
     """Generate Monte-Carlo events for a given signal process"""
@@ -219,7 +233,21 @@ def generate_sig_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.sig_dir, 'bin', 'madevent')
-    subprocess.call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+
+    wait_counter = 0
+    time_out = False
+    while not time_out and os.path.isfile(os.path.join(options.sig_dir, 'RunWeb')):
+        logger.debug('Waiting for RunWeb to be destroyed in %s' % options.sig_dir)
+        import time
+        time.sleep(1)
+        wait_counter = wait_counter + 1
+        if wait_counter >= 10:
+            time_out = True
+
+    if time_out:
+        logger.error('RunWeb should be deleted by now from %s' % options.sig_dir)
+        raise Exception('RunWeb should be deleted from %s' % options.sig_dir)
 
 def generate_report(bkg=True, sig=True):
     """Use MadAnalysis5 to generate a report with a histogram of events
@@ -262,7 +290,7 @@ def generate_report(bkg=True, sig=True):
 
     # Call MadAnalysis5
     # NOTE: MadAnalysis5 requires we redirect stdout and stderr
-    subprocess.call([options.ma5, '--script', options.ma5_script], stdout=open(os.devnull, 'w'), stderr=open(os.devnull, 'w'))
+    subprocess.check_call([options.ma5, '--script', options.ma5_script], stdout=open(os.devnull, 'w'), stderr=open(os.devnull, 'w'))
 
     # Remove our script
     logger.debug('Removing MadAnalysis script: %s' % options.ma5_script)

@@ -392,10 +392,6 @@ def save(array):
     pickle.dump(array, open(options.pkl_file, 'wb'))
 
 def main():
-    # Generate both signal and background
-    bkg = True
-    sig = True
-    
     # Initial and final values of our parameters
     first_mphi = 1.5e-03
     last_mphi = 100e-03
@@ -409,10 +405,6 @@ def main():
 
     logger = logging.getLogger(__name__)
 
-    if not bkg and not sig:
-        logger.error('Must set at least one of signal and background to True')
-        exit()
-
     # Purge our directories
     #clean()
 
@@ -421,6 +413,11 @@ def main():
 
     # Grab the parameters we've seen
     seen_params = resume()
+
+    # If we're starting fresh, regenerate our background
+    if not seen_params:
+        generate_cards(bkg=True, sig=False)
+        generate_events(bkg=True, sig=False)
 
     for mphi in mphis:
         for gsm in gsms:
@@ -436,17 +433,17 @@ def main():
             update_model( mphi=mphi, gsm=gsm, gse=gse, wphi=wphi )
 
             # Generate cards for MadGraph5
-            generate_cards(bkg, sig) 
+            generate_cards(bkg=False, sig=True) 
 
             # Generate events
-            generate_events(bkg, sig)
+            generate_events(bkg=False, sig=True)
 
             # Generate report
-            generate_report(bkg, sig)
+            generate_report()
 
             # Extract useful variables from report and param_card
             output = os.path.join(os.path.dirname(options.param_card), 'report.dat')
-            write_results(output, bkg, sig)
+            write_results(output)
 
             # Update our parameters we've seen
             seen_params.append((mphi, gsm))

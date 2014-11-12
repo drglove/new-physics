@@ -1,9 +1,7 @@
 Notebook[{
 
 Cell[CellGroupData[{
-Cell["\<\
-Mu3e sensitivity to low-mass boson\
-\>", "Title",
+Cell["Mu3e sensitivity to low-mass boson", "Title",
  CellChangeTimes->{{3.617739571514359*^9, 3.6177395962649508`*^9}}],
 
 Cell[BoxData[
@@ -345,58 +343,61 @@ Cell["Define our bins", "Text",
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"cutoff", "=", "10"}], ";", " ", 
-  RowBox[{"(*", " ", "MeV", " ", "*)"}], "\[IndentingNewLine]", 
   RowBox[{
-   RowBox[{"Resolution", "[", "M_", "]"}], ":=", 
-   RowBox[{"0.004", 
-    TagBox[GridBox[{
-       {"\[Piecewise]", GridBox[{
-          {"cutoff", 
-           RowBox[{"M", "\[LessEqual]", "cutoff"}]},
-          {"M", 
-           RowBox[{"M", ">", "cutoff"}]}
-         },
-         AllowedDimensions->{2, Automatic},
-         Editable->True,
-         GridBoxAlignment->{
-          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
-           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
-         GridBoxItemSize->{
-          "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
-           "Rows" -> {{1.}}, "RowsIndexed" -> {}},
-         GridBoxSpacings->{"Columns" -> {
-             Offset[0.27999999999999997`], {
-              Offset[0.84]}, 
-             Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
-             Offset[0.2], {
-              Offset[0.4]}, 
-             Offset[0.2]}, "RowsIndexed" -> {}},
-         Selectable->True]}
-      },
-      GridBoxAlignment->{
-       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
-        "RowsIndexed" -> {}},
-      GridBoxItemSize->{
-       "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
-        "RowsIndexed" -> {}},
-      GridBoxSpacings->{"Columns" -> {
-          Offset[0.27999999999999997`], {
-           Offset[0.35]}, 
-          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
-          Offset[0.2], {
-           Offset[0.4]}, 
-          Offset[0.2]}, "RowsIndexed" -> {}}],
-     "Piecewise",
-     DeleteWithContents->True,
-     Editable->False,
-     SelectWithContents->True,
-     Selectable->False]}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"cutoff", "=", "10"}], ";"}], " ", 
+  RowBox[{"(*", " ", "MeV", " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Resolution", "[", "M_", "]"}], ":=", 
+  RowBox[{"0.004", 
+   TagBox[GridBox[{
+      {"\[Piecewise]", GridBox[{
+         {"cutoff", 
+          RowBox[{"M", "\[LessEqual]", "cutoff"}]},
+         {"M", 
+          RowBox[{"M", ">", "cutoff"}]}
+        },
+        AllowedDimensions->{2, Automatic},
+        Editable->True,
+        GridBoxAlignment->{
+         "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+          "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}},
+           "RowsIndexed" -> {}},
+        GridBoxSpacings->{"Columns" -> {
+            Offset[0.27999999999999997`], {
+             Offset[0.84]}, 
+            Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, 
+          "Rows" -> {
+            Offset[0.2], {
+             Offset[0.4]}, 
+            Offset[0.2]}, "RowsIndexed" -> {}},
+        Selectable->True]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+       "RowsIndexed" -> {}},
+     GridBoxItemSize->{
+      "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+       "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.35]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    "Piecewise",
+    DeleteWithContents->True,
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False]}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"BinWidth", "[", "M_", "]"}], ":=", 
-   RowBox[{"2", "*", 
-    RowBox[{"Resolution", "[", "M", "]"}]}]}], ";", " ", 
+   RowBox[{
+    RowBox[{"BinWidth", "[", "M_", "]"}], ":=", 
+    RowBox[{"2", "*", 
+     RowBox[{"Resolution", "[", "M", "]"}]}]}], ";"}], " ", 
   RowBox[{"(*", " ", 
    RowBox[{"Remove", " ", "the", " ", "Nyquist", " ", "frequency"}], " ", 
    "*)"}]}]}], "Input",
@@ -414,15 +415,17 @@ Cell[BoxData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"width", "=", 
-   RowBox[{
-    RowBox[{"BinWidth", "[", "0.0", "]"}], "/", "2"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"width", "=", 
+    RowBox[{
+     RowBox[{"BinWidth", "[", "0.0", "]"}], "/", "2"}]}], ";"}], " ", 
   RowBox[{"(*", " ", 
    RowBox[{
     RowBox[{
     "Start", " ", "at", " ", "the", " ", "center", " ", "of", " ", "the", " ",
       "left"}], "-", 
-    RowBox[{"most", " ", "bin"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"most", " ", "bin"}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"bins", "=", 
    RowBox[{
     RowBox[{
@@ -439,8 +442,9 @@ Cell[BoxData[{
      RowBox[{"[", "2", "]"}], "]"}], "[", 
     RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"bins", "=", 
-   RowBox[{"bins", "/", "1000"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"bins", "=", 
+    RowBox[{"bins", "/", "1000"}]}], ";"}], " ", 
   RowBox[{"(*", " ", 
    RowBox[{"Convert", " ", "to", " ", "GeV"}], " ", "*)"}]}]}], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
@@ -4461,10 +4465,11 @@ Cell[BoxData[{
       RowBox[{"bkgScaling", "*", "#2"}], "&"}]}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"sigCounts", "=", 
-   RowBox[{
-    RowBox[{"Append", "[", 
-     RowBox[{"sigCounts", ",", "0.0"}], "]"}], "/", "2"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"sigCounts", "=", 
+    RowBox[{
+     RowBox[{"Append", "[", 
+      RowBox[{"sigCounts", ",", "0.0"}], "]"}], "/", "2"}]}], ";"}], " ", 
   RowBox[{"(*", " ", 
    RowBox[{
     RowBox[{
@@ -4472,7 +4477,8 @@ Cell[BoxData[{
      " ", "bins"}], ",", " ", 
     RowBox[{
     "and", " ", "we", " ", "double", " ", "count", " ", "our", " ", "ee", " ",
-      "pairs"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      "pairs"}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"bkgCounts", "=", 
    RowBox[{
     RowBox[{"Append", "[", 
@@ -6207,6 +6213,44 @@ Cell[BoxData["0.2975313354718657`"], "Output",
 
 Cell[CellGroupData[{
 
+Cell[TextData[{
+ "Remove the 0\[CloseCurlyQuote]s and test if any bin has ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"S", "\[GreaterEqual]", " ", 
+    SqrtBox["B"]}], TraditionalForm]]]
+}], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"filtered", "=", 
+   RowBox[{"DeleteCases", "[", 
+    RowBox[{
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"bkgCounts", ",", "sigCounts"}], "}"}], "]"}], ",", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0.0", ",", "_"}], "}"}], "|", 
+      RowBox[{"{", 
+       RowBox[{"_", ",", "0.0"}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sigCountsFiltered", "=", 
+   RowBox[{"filtered", "[", 
+    RowBox[{"[", 
+     RowBox[{";;", ",", "2"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"bkgCountsFiltered", "=", 
+   RowBox[{"filtered", "[", 
+    RowBox[{"[", 
+     RowBox[{";;", ",", "1"}], "]"}], "]"}]}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell["\<\
 Find if the number of signal events is larger than 3 statistical std. \
 deviations of the background for any single bin\
@@ -6219,7 +6263,7 @@ deviations of the background for any single bin\
 Cell[BoxData[{
  RowBox[{
   RowBox[{"\[Sigma]", "=", 
-   SqrtBox["bkgCounts"]}], ";"}], "\[IndentingNewLine]", 
+   SqrtBox["bkgCountsFiltered"]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"Or", "@@", 
   RowBox[{"Flatten", "[", 
    RowBox[{
@@ -6232,18 +6276,9 @@ Cell[BoxData[{
         RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "&"}], "/@", 
     RowBox[{"Transpose", "[", 
      RowBox[{"{", 
-      RowBox[{"sigCounts", ",", 
+      RowBox[{"sigCountsFiltered", ",", 
        RowBox[{"3", "\[Sigma]"}]}], "}"}], "]"}]}], "]"}]}]}], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{{3.6177304776225023`*^9, 3.6177305521534977`*^9}, {
-   3.617730688721465*^9, 3.617730717480085*^9}, {3.617730803974167*^9, 
-   3.617730852288007*^9}, {3.617730914089793*^9, 3.617730949874024*^9}, {
-   3.617730991301786*^9, 3.617730995955245*^9}, {3.617731044846822*^9, 
-   3.617731172108405*^9}, {3.6177312274156017`*^9, 3.617731228220854*^9}, {
-   3.617731293176682*^9, 3.61773132690543*^9}, 3.6177318686541853`*^9, {
-   3.617731963270081*^9, 3.617731970058466*^9}, {3.617732086543784*^9, 
-   3.617732176171427*^9}, {3.618245711508286*^9, 3.6182457328122387`*^9}, {
-   3.618246214253533*^9, 3.618246214532853*^9}}]
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
 
 Cell[BoxData["True"], "Output",
@@ -6256,7 +6291,7 @@ Cell[BoxData["True"], "Output",
 }, Open  ]]
 },
 WindowSize->{946, 734},
-WindowMargins->{{87, Automatic}, {81, Automatic}},
+WindowMargins->{{140, Automatic}, {Automatic, 107}},
 PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowSelection->True,
 TrackCellChangeTimes->False,
@@ -6264,3 +6299,4 @@ FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
 2013)",
 StyleDefinitions->"Default.nb"
 ]
+

@@ -17,7 +17,7 @@ M$ClassesDescription = {
         PropagatorType   -> D,
         PropagatorArrow  -> None,
         ParticleName     -> "phi",
-        ParticleFullName -> "phi"
+        FullName         -> "Dark Scalar"
     }
 };
 

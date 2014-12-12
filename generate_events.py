@@ -4,7 +4,7 @@
 # Nick Lange
 # June 29, 2014
 #
-# Generate events for a given mass and set of couplings for our scalar
+# Generate events for a given mass and kinetic mixing for our dark photon
 #
 ################################################################################
 
@@ -73,13 +73,14 @@ def update_model(**kwargs):
     logger.debug('Writing updated model to %s' % model_params)
     write_lines(model_params, param_lines)
 
-def calculate_1to2_width(mphi, gsm, gse):
+def calculate_1to2_width(mad, eps):
     """Take the model parameters and calculate the width
     of the new partcle in GeV"""
 
-    # We have phi > e+ e- as the only allowed decay
+    # We have A' > e+ e- as the only allowed decay
+    e = 0.313451 # = sqrt(4 pi alpha) (alpha at EW scale)
     me = 0.000511 # Electron mass in GeV
-    return gse**2 / (8 * np.pi) * np.sqrt(mphi**2 - 4*me**2) * (1 - 4*(me/mphi)**2)
+    return e**2 * eps**2 / (12 * np.pi) * np.sqrt(mad**2 - 4*me**2) * (1 + 2*(me/mad)**2)
 
 def read_lines(filename):
     """Read in lines from a file"""
@@ -348,14 +349,12 @@ def write_results(outfile, bkg=True, sig=True):
     param_card = open(options.param_card, 'r').read()
 
     # TODO: Make this general so it's not stuck with our model
-    regex = re.compile('1\s+(.*)\s+\#\s+gsm', re.IGNORECASE)
-    outs['gsm'] = regex.search(param_card).group(1)
-    regex = re.compile('2\s+(.*)\s+\#\s+gse', re.IGNORECASE)
-    outs['gse'] = regex.search(param_card).group(1)
-    regex = re.compile('9000005\s+(.*)\s+\#\s+Mphi', re.IGNORECASE)
-    outs['Mphi'] = regex.search(param_card).group(1)
+    regex = re.compile('1\s+(.*)\s+\#\s+eps', re.IGNORECASE)
+    outs['eps'] = regex.search(param_card).group(1)
+    regex = re.compile('9000005\s+(.*)\s+\#\s+mad', re.IGNORECASE)
+    outs['mad'] = regex.search(param_card).group(1)
     regex = re.compile('DECAY\s+9000005\s+(.*)', re.IGNORECASE)
-    outs['Wphi'] = regex.search(param_card).group(1)
+    outs['Wad'] = regex.search(param_card).group(1)
 
     with open(outfile, 'w') as file:
         for param, value in outs.items():
@@ -393,15 +392,14 @@ def save(array):
 
 def main():
     # Initial and final values of our parameters
-    first_mphi = 1.5e-03
-    last_mphi = 100e-03
-    first_gsm = 1.0e-06
-    last_gsm = 1.0e-03
+    first_mad = 1.5e-03
+    last_mad = 100e-03
+    first_eps = 0.1
+    last_eps = 0.1
 
     # Our ranges for our parameters
-    mphis = np.linspace(first_mphi, last_mphi, num=20)
-    gsms = np.logspace(np.log10(first_gsm), np.log10(last_gsm), num=20)
-    gse = 1.00e-06
+    mads = np.linspace(first_mad, last_mad, num=20)
+    epss = np.logspace(np.log10(first_eps), np.log10(last_eps), num=1)
 
     logger = logging.getLogger(__name__)
 
@@ -409,7 +407,7 @@ def main():
     #clean()
 
     # Generate the model with given initials parameters
-    generate_model( mphi=first_mphi, gsm=first_gsm, gse=gse )
+    generate_model( mad=first_mad, eps=first_eps )
 
     # Grab the parameters we've seen
     seen_params = resume()
@@ -419,18 +417,18 @@ def main():
         generate_cards(bkg=True, sig=False)
         generate_events(bkg=True, sig=False)
 
-    for mphi in mphis:
-        for gsm in gsms:
-            if (mphi, gsm) in seen_params:
+    for mad in mads:
+        for eps in epss:
+            if (mad, eps) in seen_params:
                 # Skip pairs of parameters we've seen
                 continue
 
             # FeynRules calculated our width for us, but we need to do this
             # here manually to avoid calling FeynRules again
-            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gse )
+            wad = calculate_1to2_width( mad=mad, eps=eps )
 
             # Update our model with new parameters
-            update_model( mphi=mphi, gsm=gsm, gse=gse, wphi=wphi )
+            update_model( mad=mad, eps=eps, wad=wad )
 
             # Generate cards for MadGraph5
             generate_cards(bkg=False, sig=True) 
@@ -446,7 +444,7 @@ def main():
             write_results(output)
 
             # Update our parameters we've seen
-            seen_params.append((mphi, gsm))
+            seen_params.append((mad, eps))
             save(seen_params)
 
 if __name__ == "__main__":

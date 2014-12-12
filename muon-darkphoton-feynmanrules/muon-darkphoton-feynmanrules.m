@@ -7,12 +7,12 @@ $FeynRulesPath = SetDirectory[
 
 
 ResetDirectory[]
-LoadModel["muon-scalar-feynmanrules/SM.fr", "muon-scalar-feynmanrules/muon-scalar.fr"]; 
+LoadModel["muon-darkphoton-feynmanrules/SM.fr", "muon-darkphoton-feynmanrules/muon-darkphoton.fr"]; 
 
+\[ScriptCapitalL]new = (-(1/4))*FS[Ad, \[Kappa], \[Tau]]*FS[Ad, \[Kappa], \[Tau]] + (1/2)*Mad^2*Ad[\[Kappa]]*Ad[\[Kappa]] + 
+   eps*ee*ebar . Ga[\[Kappa]] . Ad[\[Kappa]] . e + eps*ee*mubar . Ga[\[Kappa]] . Ad[\[Kappa]] . mu
 
-\[ScriptCapitalL]new = (1/2)*del[phi, \[Mu]]*del[phi, \[Mu]] - (Mphi^2/2)*phi^2 + 
-   gsm*mubar . mu*phi + gse*ebar . e*phi
-
+\[ScriptCapitalL]new = ExpandIndices[\[ScriptCapitalL]new]; 
 
 vertices = FeynmanRules[\[ScriptCapitalL]new]
 

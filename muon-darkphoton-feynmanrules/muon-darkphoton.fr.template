@@ -1,34 +1,38 @@
-M$ModelName = "muon-scalar";
+M$ModelName = "muon-darkphoton";
 
 M$Information = { Authors      -> { "N. Lange" },
-                  Version      -> "1.2",
-                  Date         -> "June 10, 2014",
+                  Version      -> "1.0",
+                  Date         -> "December 4, 2014",
                   Institutions -> { "University of Victoria" },
                   Emails       -> { "nlange@uvic.ca" }
                 };
 
+M$GaugeGroups = {
+    U1D == {
+        Abelian          -> True,
+        CouplingConstant -> eps,
+        GaugeBoson       -> Ad,
+        Charge           -> Q
+    }
+};
+
 M$ClassesDescription = {
-    S[100] == {
-        ClassName        -> phi,
+    V[100] == {
+        ClassName        -> Ad,
         SelfConjugate    -> True,
-        Mass             -> { Mphi, MPHI_REPLACE },
-        Width            -> { Wphi, 1 },
-        PropagatorLabel  -> "phi",
-        PropagatorType   -> D,
+        Mass             -> { Mad, MAD_REPLACE },
+        Width            -> { Wad, 1 },
+        PropagatorLabel  -> "ad",
+        PropagatorType   -> W,
         PropagatorArrow  -> None,
-        ParticleName     -> "phi",
-        ParticleFullName -> "phi"
+        ParticleName     -> "ad",
+        FullName         -> "Dark Photon"
     }
 };
 
 M$Parameters = {
-    gsm == { ParameterType    -> External,
-             Value            -> GSM_REPLACE,
-             InteractionOrder -> { NP, 1 }
-    },
-
-    gse == { ParameterType    -> External,
-             Value            -> GSE_REPLACE,
+    eps == { ParameterType    -> External,
+             Value            -> EPS_REPLACE,
              InteractionOrder -> { NP, 1 }
     }
 };

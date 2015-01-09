@@ -395,13 +395,13 @@ def main():
     # Initial and final values of our parameters
     first_mphi = 1.5e-03
     last_mphi = 100e-03
-    first_gsm = 1.0e-06
-    last_gsm = 1.0e-03
+    first_gsm = 0.1
+    last_gsm = 0.1
 
     # Our ranges for our parameters
     mphis = np.linspace(first_mphi, last_mphi, num=20)
-    gsms = np.logspace(np.log10(first_gsm), np.log10(last_gsm), num=20)
-    gse = 1.00e-06
+    gsms = np.logspace(np.log10(first_gsm), np.log10(last_gsm), num=1)
+    gse = 0.1
 
     logger = logging.getLogger(__name__)
 

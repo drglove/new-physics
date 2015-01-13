@@ -15,7 +15,7 @@ join = os.path.join
 work_dir = os.path.dirname(os.path.realpath(__file__))
 
 bkg_dir = join(work_dir, 'muon-decay-background')
-sig_dir = join(work_dir, 'muon-decay-newphysics')
+sig_dir = join(work_dir, 'muon-decay-scalar-newphysics')
 analysis_dir = join(work_dir, 'newphysics-analysis')
 
 mg5_dir = join(work_dir, 'madgraph5')

@@ -1,5 +1,5 @@
 generate_events
-set nevents 1000
+set nevents 100000
 set lpp1 0
 set lpp2 0
 set ebeam1 0

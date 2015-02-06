@@ -395,8 +395,10 @@ def main():
     # Initial and final values of our parameters
     first_mphi = 1.5e-03
     last_mphi = 100e-03
-    first_gsm = 0.1
-    last_gsm = 0.1
+    # gphi ~ e *eps
+    e = 0.313451
+    first_gsm = e*0.1
+    last_gsm = e*0.1
 
     # Our ranges for our parameters
     mphis = np.linspace(first_mphi, last_mphi, num=20)
@@ -409,15 +411,15 @@ def main():
     #clean()
 
     # Generate the model with given initials parameters
-    generate_model( mphi=first_mphi, gsm=first_gsm, gse=gse )
+    generate_model( mphi=first_mphi, gsm=first_gsm, gse=first_gsm)
 
     # Grab the parameters we've seen
     seen_params = resume()
 
     # If we're starting fresh, regenerate our background
-    if not seen_params:
-        generate_cards(bkg=True, sig=False)
-        generate_events(bkg=True, sig=False)
+    #if not seen_params:
+    #    generate_cards(bkg=True, sig=False)
+    #    generate_events(bkg=True, sig=False)
 
     for mphi in mphis:
         for gsm in gsms:
@@ -427,10 +429,10 @@ def main():
 
             # FeynRules calculated our width for us, but we need to do this
             # here manually to avoid calling FeynRules again
-            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gse )
+            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gsm )
 
             # Update our model with new parameters
-            update_model( mphi=mphi, gsm=gsm, gse=gse, wphi=wphi )
+            update_model( mphi=mphi, gsm=gsm, gse=gsm, wphi=wphi )
 
             # Generate cards for MadGraph5
             generate_cards(bkg=False, sig=True) 

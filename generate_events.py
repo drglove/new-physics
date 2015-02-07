@@ -413,9 +413,9 @@ def main():
     seen_params = resume()
 
     # If we're starting fresh, regenerate our background
-    if not seen_params:
-        generate_cards(bkg=True, sig=False)
-        generate_events(bkg=True, sig=False)
+    #if not seen_params:
+    #    generate_cards(bkg=True, sig=False)
+    #    generate_events(bkg=True, sig=False)
 
     for mad in mads:
         for eps in epss:

@@ -33,7 +33,8 @@ model_dest = join(mg5_dir, 'models', os.path.basename(model).replace('.fr', '_UF
 model_script = join(model_dir, 'muon-scalar-feynmanrules.m')
 ma5_script = join(work_dir, 'ma5_cmds.dat')
 ma5_templ = join(work_dir, 'ma5_cmds.dat.templ')
-me5_script = join(work_dir, 'me5_cmds.dat')
+me5_bkg_script = join(work_dir, 'me5_bkg_cmds.dat')
+me5_sig_script = join(work_dir, 'me5_sig_cmds.dat')
 
 bkg_generate_script = join(work_dir, 'bkg_cmds.dat')
 sig_generate_script = join(work_dir, 'sig_cmds.dat')

@@ -209,7 +209,7 @@ def generate_bkg_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.bkg_dir, 'bin', 'madevent')
-    subprocess.check_call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([madevent, options.me5_bkg_script], stdout=open(os.devnull, 'w'))
 
     wait_counter = 0
     time_out = False
@@ -233,7 +233,7 @@ def generate_sig_events():
 
     # Call MadEvent from the generated cards from MadGraph
     madevent = os.path.join(options.sig_dir, 'bin', 'madevent')
-    subprocess.check_call([madevent, options.me5_script], stdout=open(os.devnull, 'w'))
+    subprocess.check_call([madevent, options.me5_sig_script], stdout=open(os.devnull, 'w'))
 
     wait_counter = 0
     time_out = False
@@ -393,17 +393,20 @@ def save(array):
 
 def main():
     # Initial and final values of our parameters
-    first_mphi = 1.5e-03
+    first_mphi = 1.1e-03
     last_mphi = 100e-03
-    # gphi ~ e *eps
-    e = 0.313451
-    first_gsm = e*0.1
-    last_gsm = e*0.1
+    # e = 0.313451
+    first_gsm = 10**-1
+    last_gsm = first_gsm
+
+    # Couplings are Higgs-like to fermions
+    me = 0.000511 # Electron mass in GeV
+    mmu = 0.105658 # Muon mass in GeV
+    gse = first_gsm * (me/mmu)
 
     # Our ranges for our parameters
-    mphis = np.linspace(first_mphi, last_mphi, num=20)
+    mphis = np.logspace(np.log10(first_mphi), np.log10(last_mphi), num=200)
     gsms = np.logspace(np.log10(first_gsm), np.log10(last_gsm), num=1)
-    gse = 0.1
 
     logger = logging.getLogger(__name__)
 
@@ -411,15 +414,15 @@ def main():
     #clean()
 
     # Generate the model with given initials parameters
-    generate_model( mphi=first_mphi, gsm=first_gsm, gse=first_gsm)
+    generate_model( mphi=first_mphi, gsm=first_gsm, gse=gse )
 
     # Grab the parameters we've seen
     seen_params = resume()
 
     # If we're starting fresh, regenerate our background
-    #if not seen_params:
-    #    generate_cards(bkg=True, sig=False)
-    #    generate_events(bkg=True, sig=False)
+    if not seen_params:
+        generate_cards(bkg=True, sig=False)
+        generate_events(bkg=True, sig=False)
 
     for mphi in mphis:
         for gsm in gsms:
@@ -427,12 +430,14 @@ def main():
                 # Skip pairs of parameters we've seen
                 continue
 
+            gse = gsm*(me/mmu)
+
             # FeynRules calculated our width for us, but we need to do this
             # here manually to avoid calling FeynRules again
-            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gsm )
+            wphi = calculate_1to2_width( mphi=mphi, gsm=gsm, gse=gse )
 
             # Update our model with new parameters
-            update_model( mphi=mphi, gsm=gsm, gse=gsm, wphi=wphi )
+            update_model( mphi=mphi, gsm=gsm, gse=gse, wphi=wphi )
 
             # Generate cards for MadGraph5
             generate_cards(bkg=False, sig=True) 

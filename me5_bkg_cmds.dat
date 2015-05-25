@@ -1,4 +1,5 @@
 generate_events
-set nevents 10000
+set nevents 200000
 set lpp1 0
 set lpp2 0
+set cut_decays F

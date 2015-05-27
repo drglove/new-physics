@@ -392,13 +392,13 @@ def save(array):
 
 def main():
     # Initial and final values of our parameters
-    first_mad = 1.5e-03
+    first_mad = 1.1e-03
     last_mad = 100e-03
     first_eps = 0.1
     last_eps = 0.1
 
     # Our ranges for our parameters
-    mads = np.linspace(first_mad, last_mad, num=20)
+    mads = np.logspace(np.log10(first_mad), np.log10(last_mad), num=200)
     epss = np.logspace(np.log10(first_eps), np.log10(last_eps), num=1)
 
     logger = logging.getLogger(__name__)

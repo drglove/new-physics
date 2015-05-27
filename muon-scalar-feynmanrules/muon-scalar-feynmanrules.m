@@ -11,7 +11,7 @@ LoadModel["muon-scalar-feynmanrules/SM.fr", "muon-scalar-feynmanrules/muon-scala
 
 
 \[ScriptCapitalL]new = (1/2)*del[phi, \[Mu]]*del[phi, \[Mu]] - (Mphi^2/2)*phi^2 + 
-   gsm*mubar . mu*phi + gse*ebar . e*phi
+   gsm*mubar . mu*phi + gse*ebar . e*phi + gst*tabar . ta*phi
 
 
 vertices = FeynmanRules[\[ScriptCapitalL]new]

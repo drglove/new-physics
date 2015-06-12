@@ -7,7 +7,7 @@ $FeynRulesPath = SetDirectory[
 
 
 ResetDirectory[]
-LoadModel["muon-scalar-feynmanrules/SM.fr", "muon-scalar-feynmanrules/muon-scalar.fr"]; 
+LoadModel["scalar-feynmanrules/SM.fr", "scalar-feynmanrules/scalar.fr"]; 
 
 
 \[ScriptCapitalL]new = (1/2)*del[phi, \[Mu]]*del[phi, \[Mu]] - (Mphi^2/2)*phi^2 + 

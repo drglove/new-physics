@@ -1,4 +1,4 @@
-M$ModelName = "muon-scalar";
+M$ModelName = "scalar";
 
 M$Information = { Authors      -> { "N. Lange" },
                   Version      -> "1.3",

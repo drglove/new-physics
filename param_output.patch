@@ -1,28 +1,25 @@
---- madgraph5/madgraph/interface/madevent_interface.py	2014-04-01 00:44:13.000000000 -0700
-+++ madgraph5/madgraph/interface/madevent_interface.py	2014-06-11 17:34:05.000000000 -0700
-@@ -2128,6 +2128,12 @@
-             # pythia launches pgs/delphes if needed
-             self.store_result()
-             
-+            # nlange 06-11-2014: Output param_card if a decay
-+            if self.ninitial == 1:
-+                self.collect_decay_widths()
-+                self.update_status('generate_events done', level='parton',
-+                                    makehtml=False)
-+            
-     
-     def do_launch(self, line, *args, **opt):
-         """Main Commands: exec generate_events for 2>N and calculate_width for 1>N"""
-
---- madgraph5/input/mg5_configuration.txt	2014-05-16 05:28:17.000000000 -0700
-+++ madgraph5/input/mg5_configuration.txt	2014-07-30 16:26:37.000000000 -0700
-@@ -78,7 +78,7 @@
-
+--- madgraph5/input/mg5_configuration.txt	2015-09-07 11:07:41.000000000 -0700
++++ madgraph5/input/mg5_configuration.txt	2015-09-21 17:22:42.000000000 -0700
+@@ -83,7 +83,7 @@
+ 
  #! Allow/Forbid the automatic opening of the web browser  (on the status page)
  #!  when launching MadEvent [True/False]
 -# automatic_html_opening = True
-+automatic_html_opening = False
-
- #! Default Running mode
++# automatic_html_opening = False
+ 
+ #! Default Running mode 
  #!  0: single machine/ 1: cluster / 2: multicore
-
+--- madgraph5/madgraph/interface/madevent_interface.py	2015-09-07 11:07:39.000000000 -0700
++++ madgraph5/madgraph/interface/madevent_interface.py	2015-09-21 17:19:57.000000000 -0700
+@@ -2026,6 +2026,11 @@
+             self.exec_cmd('pythia --no_default', postcmd=False, printcmd=False)
+             # pythia launches pgs/delphes if needed    
+             self.store_result()
++
++            # nlange 06-11-2014: Output param_card if a decay
++            if self.ninital == 1:
++                self.collect_decay_widths()
++                self.update_status('generate events done', level='parton', makehtml=False)
+     
+     def do_initMadLoop(self,line):
+         """Compile and run MadLoop for a certain number of PS point so as to 
